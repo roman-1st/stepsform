@@ -1,18 +1,7 @@
 import * as Yup from "yup";
+import { FormStateType } from "./Form.types.ts";
 const requiredMsg = "Обязательное поле";
 
-export type FormType = {
-  firstName: string;
-  lastName: string;
-  gender: "men" | "women" | null;
-  descriptionType: "1" | "2" | null;
-  description: "";
-  langs: [];
-};
-
-export type FormStepProps = {
-  disabled: boolean;
-};
 export const formValidateSchema = [
   Yup.object({
     firstName: Yup.string().required(requiredMsg),
@@ -36,7 +25,7 @@ export const formValidateSchema = [
   }),
 ];
 
-export const formInitialState: FormType = {
+export const formInitialState: FormStateType = {
   firstName: "",
   lastName: "",
   gender: null,

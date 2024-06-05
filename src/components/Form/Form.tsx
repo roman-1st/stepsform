@@ -6,16 +6,12 @@ import {
   FormWrapper,
 } from "../../shared/form";
 import { Dispatch, FC, SetStateAction, useMemo, useState } from "react";
-import {
-  formInitialState,
-  FormStepProps,
-  FormType,
-  formValidateSchema,
-} from "./Form.helper.ts";
+import { formInitialState, formValidateSchema } from "./Form.helper.ts";
 import { Step1, Step2, Step3, Step4 } from "./steps";
 import { Form as FormikForm, Formik } from "formik";
 import { getCurrentFormStepsStatus } from "../../utils";
 import { ContentWrapper } from "../../shared/components";
+import { FormStateType, FormStepProps } from "./Form.types.ts";
 
 const maxSteps = 4;
 
@@ -27,9 +23,10 @@ const FormStepsList: { [key: number]: FC<FormStepProps> } = {
 };
 
 type FormProps = {
-  result?: FormType;
-  setResult: Dispatch<SetStateAction<FormType | undefined>>;
+  result?: FormStateType;
+  setResult: Dispatch<SetStateAction<FormStateType | undefined>>;
 };
+
 export const Form: FC<FormProps> = ({ result, setResult }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [currentSchema, setCurrentSchema] = useState(
@@ -38,7 +35,7 @@ export const Form: FC<FormProps> = ({ result, setResult }) => {
   const lastStep = currentStep === maxSteps;
   const disabledForm = !!result;
 
-  const onSubmit = (values: FormType, actions: any) => {
+  const onSubmit = (values: FormStateType, actions: any) => {
     sessionStorage.setItem("result", JSON.stringify(values));
 
     if (!lastStep) {
@@ -63,7 +60,7 @@ export const Form: FC<FormProps> = ({ result, setResult }) => {
     if (sessionStorage.getItem("result")) {
       const prevState = JSON.parse(
         sessionStorage.getItem("result") || "",
-      ) as FormType;
+      ) as FormStateType;
 
       return {
         ...formInitialState,
