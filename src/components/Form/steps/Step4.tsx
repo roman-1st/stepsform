@@ -2,9 +2,8 @@ import { ErrorMessage, Field } from "formik";
 import { CustomMultiSelect } from "../../../shared/form/fields";
 import { languageDict } from "../../../dictionaries";
 import { FC } from "react";
-import { FormStepProps } from "../Form.helper.ts";
 
-export const Step4: FC<FormStepProps> = ({ disabled }) => {
+export const Step4: FC = () => {
   return (
     <div className="">
       <div>
@@ -18,7 +17,6 @@ export const Step4: FC<FormStepProps> = ({ disabled }) => {
           component={CustomMultiSelect}
           placeholder="..."
           isMulti={true}
-          disabled={disabled}
         />
         <div className="text-danger mt-2">
           <ErrorMessage name="langs" />

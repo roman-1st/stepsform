@@ -12,3 +12,5 @@ export type FormStateType = {
 export type FormStepProps = {
   disabled: boolean;
 };
+
+export type FormLastStepProps = { result: FormStateType };

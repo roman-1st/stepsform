@@ -1,8 +1,7 @@
 import { ErrorMessage, Field, useField } from "formik";
 import { FC } from "react";
-import { FormStepProps } from "../Form.helper.ts";
 
-export const Step3: FC<FormStepProps> = ({ disabled }) => {
+export const Step3: FC = () => {
   const [field] = useField("descriptionType");
   return (
     <div>
@@ -17,7 +16,6 @@ export const Step3: FC<FormStepProps> = ({ disabled }) => {
             className="form-check-input"
             value={"1"}
             id={"gender-men"}
-            disabled={disabled}
           />
           <label htmlFor="#gender-men" className="form-check-label ms-2">
             В двух словах
@@ -30,7 +28,6 @@ export const Step3: FC<FormStepProps> = ({ disabled }) => {
             className="form-check-input"
             value={"2"}
             id={"gender-women"}
-            disabled={disabled}
           />
           <label htmlFor="#gender-women" className="form-check-label ms-2">
             Подробно
@@ -43,12 +40,7 @@ export const Step3: FC<FormStepProps> = ({ disabled }) => {
             <label className="form-label mb-2 text-secondary">
               Краткое описание
             </label>
-            <Field
-              name="description"
-              type="text"
-              className="form-control"
-              disabled={disabled}
-            />
+            <Field name="description" type="text" className="form-control" />
             <div className="text-danger mt-2">
               <ErrorMessage name="description" />
             </div>
@@ -64,7 +56,6 @@ export const Step3: FC<FormStepProps> = ({ disabled }) => {
               name="description"
               type="text"
               className="form-control"
-              disabled={disabled}
             />
             <div className="text-danger mt-2">
               <ErrorMessage name="description" />

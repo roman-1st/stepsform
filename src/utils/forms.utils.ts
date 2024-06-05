@@ -1,4 +1,4 @@
-import { FormStepStatus } from "../types";
+import { FormStepStatus } from "../components/Form/Form.types.ts";
 
 export const getCurrentFormStepsStatus = (
   index: number,

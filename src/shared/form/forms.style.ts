@@ -1,5 +1,5 @@
-import { FormStepStatus } from "../../types";
 import styled from "styled-components";
+import { FormStepStatus } from "../../components/Form/Form.types.ts";
 
 export const FormStatusbarWrapper = styled.div`
   display: flex;

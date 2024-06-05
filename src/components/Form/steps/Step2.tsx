@@ -1,8 +1,7 @@
 import { ErrorMessage, Field } from "formik";
 import { FC } from "react";
-import { FormStepProps } from "../Form.helper.ts";
 
-export const Step2: FC<FormStepProps> = ({ disabled }) => {
+export const Step2: FC = () => {
   return (
     <div>
       <label className="form-label mb-2 text-secondary">Выберите пол</label>
@@ -14,7 +13,6 @@ export const Step2: FC<FormStepProps> = ({ disabled }) => {
             className="form-check-input"
             value={"men"}
             id={"gender-men"}
-            disabled={disabled}
           />
           <label htmlFor="#gender-men" className="form-check-label ms-2">
             Мужской
@@ -27,7 +25,6 @@ export const Step2: FC<FormStepProps> = ({ disabled }) => {
             className="form-check-input"
             value={"women"}
             id={"gender-women"}
-            disabled={disabled}
           />
           <label htmlFor="#gender-women" className="form-check-label ms-2">
             Женский

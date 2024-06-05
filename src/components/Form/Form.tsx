@@ -5,37 +5,34 @@ import {
   FormStepWrapper,
   FormWrapper,
 } from "../../shared/form";
-import { Dispatch, FC, SetStateAction, useMemo, useState } from "react";
+import { FC, useState } from "react";
 import { formInitialState, formValidateSchema } from "./Form.helper.ts";
-import { Step1, Step2, Step3, Step4 } from "./steps";
+import { Step1, Step2, Step3, Step4, Step5 } from "./steps";
 import { Form as FormikForm, Formik } from "formik";
 import { getCurrentFormStepsStatus } from "../../utils";
 import { ContentWrapper } from "../../shared/components";
-import { FormStateType, FormStepProps } from "./Form.types.ts";
+import { FormLastStepProps, FormStateType } from "./Form.types.ts";
 
-const maxSteps = 4;
+const maxSteps = 5;
 
-const FormStepsList: { [key: number]: FC<FormStepProps> } = {
+const FormStepsList: { [key: number]: FC<FormLastStepProps> } = {
   1: Step1,
   2: Step2,
   3: Step3,
   4: Step4,
+  5: Step5,
 };
 
-type FormProps = {
-  result?: FormStateType;
-  setResult: Dispatch<SetStateAction<FormStateType | undefined>>;
-};
-
-export const Form: FC<FormProps> = ({ result, setResult }) => {
+export const Form: FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [currentSchema, setCurrentSchema] = useState(
     formValidateSchema[currentStep - 1],
   );
+
   const lastStep = currentStep === maxSteps;
-  const disabledForm = !!result;
 
   const onSubmit = (values: FormStateType, actions: any) => {
+    console.log(actions);
     sessionStorage.setItem("result", JSON.stringify(values));
 
     if (!lastStep) {
@@ -43,11 +40,10 @@ export const Form: FC<FormProps> = ({ result, setResult }) => {
       setCurrentSchema(formValidateSchema[currentStep]);
       return;
     } else {
-      actions.resetForm();
-      setResult(values);
+      sessionStorage.removeItem("result");
+      actions.resetForm({ values: formInitialState });
       setCurrentStep(1);
       setCurrentSchema(formValidateSchema[0]);
-      sessionStorage.removeItem("result");
     }
   };
 
@@ -56,7 +52,7 @@ export const Form: FC<FormProps> = ({ result, setResult }) => {
     setCurrentSchema(formValidateSchema[prev - 2]);
   };
 
-  const getInitialState = useMemo(() => {
+  const getInitialState = () => {
     if (sessionStorage.getItem("result")) {
       const prevState = JSON.parse(
         sessionStorage.getItem("result") || "",
@@ -69,7 +65,7 @@ export const Form: FC<FormProps> = ({ result, setResult }) => {
     }
 
     return formInitialState;
-  }, [result]);
+  };
 
   const StepComponent = FormStepsList[currentStep];
 
@@ -84,21 +80,21 @@ export const Form: FC<FormProps> = ({ result, setResult }) => {
         ))}
       </FormStatusbarWrapper>
       <Formik
-        initialValues={getInitialState}
+        initialValues={getInitialState()}
         onSubmit={onSubmit}
         validationSchema={currentSchema}
       >
-        {() => {
+        {({ values }) => {
           return (
             <FormWrapper>
               {/*@ts-ignore*/}
               <FormikForm>
                 <FormStepWrapper>
-                  <StepComponent disabled={disabledForm} />
+                  <StepComponent result={values} />
                 </FormStepWrapper>
 
                 <FormButtonsWrapper>
-                  {currentStep > 1 && (
+                  {currentStep > 1 && currentStep < 5 && (
                     <button
                       onClick={() => goToPrevStep(currentStep)}
                       className="btn btn-primary"
@@ -107,13 +103,16 @@ export const Form: FC<FormProps> = ({ result, setResult }) => {
                       Назад
                     </button>
                   )}
-                  <button
-                    type="submit"
-                    className="btn btn-primary"
-                    disabled={disabledForm}
-                  >
-                    {lastStep ? "Завершить" : "Вперед"}
-                  </button>
+                  {currentStep >= 5 && (
+                    <button type="submit" className="btn btn-secondary">
+                      Начать сначала
+                    </button>
+                  )}
+                  {currentStep <= maxSteps - 1 && (
+                    <button type="submit" className="btn btn-primary">
+                      {currentStep === maxSteps - 1 ? "Завершить" : "Вперед"}
+                    </button>
+                  )}
                 </FormButtonsWrapper>
               </FormikForm>
             </FormWrapper>
