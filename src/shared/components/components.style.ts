@@ -5,4 +5,5 @@ export const ContentWrapper = styled.div`
   padding: 20px;
   background: white;
   border-radius: 10px;
+  max-width: 700px;
 `;
